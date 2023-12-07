@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gothic+A1:wght@300;400;500;600&family=Noto+Sans+KR&family=Noto+Serif+KR:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    html{font-family: 'Black Han Sans', sans-serif;
+  font-family: 'Gothic A1', sans-serif;font-weight:400}
+    body {
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background-color:#B9CEDF;
+    }
+
+    #wrap {
+      margin: 10px;
+      order: 1;
+    }
+
+    #userInput, #textInput {
+      margin-bottom: 10px;
+      width: 250px;
+      height: 30px
+    }
+
+    .random-image {
+      position: absolute;
+      transition: opacity 2s ease-out;
+      cursor: pointer;
+    }
+
+    #history-box {
+      height: 100vh;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      padding: 5px;
+      width: 350px;
+      position: fixed;
+      bottom: 0;
+      background-color: white;
+      text-align: right;
+      direction: rtl;
+    }
+
+    #history {
+      list-style-type: none;
+      padding: 0;
+      overflow-y: auto;
+    }
+
+    #history li {
+      margin-bottom: 5px;
+    }
+
+    #textInputBox {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      margin: 20px;
+    }
+
+    .yellow-background {
+  display: inline-block;
+  background-color: #FFEB34;
+  padding: 7px;
+  margin-right: 5px;
+  margin-top: 7px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+  position: relative;
+  border-radius: 5px;
+}
+
+      #submitButton {
+      width: 70px;
+      height: 35px;
+      cursor: pointer;
+      background-color: #FFEB34;
+      border: none;margin-left: 0px}
+          #submitButton:hover {
+      background-color: #FFD700; /* 버튼에 호버 효과 추가 */
+
+  </style>
+
+  <script>
+    var imageHistory = [];
+
+    function showRandomImage(inputFieldId) {
+      var userInput = document.getElementById(inputFieldId);
+      var word = userInput.value;
+
+      if (word.includes('카톡') || word.includes('톡') || word.includes('ㅋㅌ')) 
+      { word = '카카오톡';} 
+      else if (word.includes('인스타') || word.includes('인별') || word.includes('인별그램')) {word = '인스타그램';}
+
+      else if (word.includes('에타') || word.includes('애타')|| word.includes('ㅇㅌ') || word.includes('에브리')|| word.includes('애브리타임')) {word = '에브리타임';}
+
+      else if (word.includes('쓰레드') || word.includes('쓰래드')|| word.includes('스래드') || word.includes('threads')|| word.includes('Threads')) {word = '스레드';}
+
+
+
+      var images = [];
+      var sounds = [];
+      var clickSounds = [];
+      
+      if (word === '카카오톡') {
+        images = ['./img/ka1.png', './img/ka2.png', './img/ka3.png', './img/ka4.png'
+        , './img/ka5.png', './img/ka6.png', './img/ka7.png', './img/ka8.png', './img/ka9.png'];
+        sounds = ['./mp3/ka.mp3', './mp3/ka.mp3', './mp3/ka.mp3', './mp3/ka.mp3'
+        , './mp3/ka.mp3', './mp3/ka.mp3', './mp3/ka.mp3', './mp3/ka.mp3', './mp3/ka.mp3'];
+        clickSounds = ['./mp3/tr.mp3'];
+      } 
+      else if (word === '인스타그램') {
+        images = ['./img/in1.png', './img/in2.png', './img/in3.png', './img/in4.png', './img/in5.png', './img/in6.png', './img/in7.png', './img/in8.png', './img/in9.png'];
+        sounds = ['./mp3/ip.mp3', './mp3/ip.mp3', './mp3/ip.mp3'];
+        clickSounds = ['./mp3/tr.mp3'];
+      }
+      else if (word === '에브리타임') {
+        images = ['./img/ev1.png', './img/ev2.png', './img/ev3.png', './img/ev4.png', './img/ev5.png', './img/ev6.png'];
+        sounds = ['./mp3/ip.mp3', './mp3/ip.mp3', './mp3/ip.mp3', './mp3/ip.mp3', './mp3/ip.mp3', './mp3/ip.mp3'];
+        clickSounds = ['./mp3/tr.mp3'];
+      } 
+       else if (word === '스레드') {
+        images = ['./img/th1.png', './img/th2.png', './img/th3.png'];
+        sounds = ['./mp3/ip.mp3', './mp3/ip.mp3', './mp3/ip.mp3'];
+        clickSounds = ['./mp3/tr.mp3'];
+      } 
+      else {
+        images = ['./img/you1.png', './img/you2.png', './img/you3.png', './img/you4.png', './img/you5.png', './img/you6.png', './img/you7.png', './img/you8.png', './img/you9.png', './img/you10.png', './img/you11.png', './img/you12.png'];
+        sounds = ['./mp3/ip.mp3','./mp3/ip.mp3','./mp3/ip.mp3','./mp3/ip.mp3','./mp3/ip.mp3','./mp3/ip.mp3','./mp3/ip.mp3','./mp3/ip.mp3','./mp3/ip.mp3','./mp3/ip.mp3','./mp3/ip.mp3','./mp3/ip.mp3'];
+        clickSounds = ['./mp3/tr.mp3'];
+      }
+
+      if (images.length > 0 && sounds.length > 0 && clickSounds.length > 0) {
+        var randomIndex = Math.floor(Math.random() * images.length);
+
+        var image = document.createElement('img');
+        image.src = images[randomIndex];
+        image.className = 'random-image';
+
+        var audio = document.createElement('audio');
+        audio.src = sounds[Math.floor(Math.random() * sounds.length)];
+
+        var randomX = Math.floor(Math.random() * (window.innerWidth - 100));
+        var randomY = Math.floor(Math.random() * (window.innerHeight - 100));
+
+        image.style.left = randomX + 'px';
+        image.style.top = randomY + 'px';
+
+        document.body.appendChild(image);
+        document.body.appendChild(audio);
+
+        audio.play();
+
+        image.addEventListener('click', function() {
+          var clickAudio = document.createElement('audio');
+          clickAudio.src = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+          clickAudio.play();
+          
+          var opacity = 1;
+          var fadeOutInterval = setInterval(function() {
+            opacity -= 0.05;
+            image.style.opacity = opacity;
+            
+            if (opacity <= 0) {
+              clearInterval(fadeOutInterval);
+              document.body.removeChild(image);
+              document.body.removeChild(audio);
+              document.body.removeChild(clickAudio);
+            }
+          }, 20);
+        });
+
+        imageHistory.push(userInput.value); // 여기서 userInput.value 대신에 word를 사용
+        updateHistory();
+
+        userInput.value = '';
+      } else {
+        alert('단어를 입력해주세요');
+      }
+    }
+
+    function handleKeyPress(event, inputFieldId) {
+      if (event.key === 'Enter') {
+        showRandomImage(inputFieldId);
+      }
+    }
+
+    function handleButtonClick() {
+    showRandomImage('textInput');
+  }
+
+    function updateHistory() {
+      var historyList = document.getElementById('history');
+      historyList.innerHTML = '';
+
+      imageHistory.forEach(function(word) {
+        var listItem = document.createElement('li');
+        listItem.innerHTML = '<span class="yellow-background">' + word + '</span>';
+        historyList.appendChild(listItem);
+      });
+    }
+  </script>
+</head>
+<body>
+  <div id="history-box">
+    <ul id="history"></ul>
+  </div>
+
+  <div id="textInputBox">
+    <input type="text" id="textInput" onkeypress="handleKeyPress(event, 'textInput')" placeholder="사용하는 SNS, 아무말이나 입력해보세요.">
+    <button id="submitButton" onclick="handleButtonClick()">전송</button>
+  </div>
+    <label for="textInput"></label>
+  </div>
+</body>
+</html>
